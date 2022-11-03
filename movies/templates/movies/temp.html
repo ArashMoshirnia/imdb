@@ -7,9 +7,18 @@
 <body>
 
 <form action="{% url 'form_post' %}" method="post">
-    <input>
-    <input>
-    <button type="submit"> Submit</button>
+    {% csrf_token %}
+    <div class="form-group">
+        <input type="text" placeholder="Name" name="name"> <br>
+    </div>
+     <div class="form-group">
+         <input type="password" placeholder="Password" name="password"> <br>
+    </div>
+     <div class="form-group">
+         <input type="number" placeholder="Age" name="age"> <br>
+    </div>
+
+    <button type="submit" class="btn btn-primary"> Submit</button>
 </form>
 
 </body>

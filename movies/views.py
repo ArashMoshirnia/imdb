@@ -16,3 +16,11 @@ def movies_list(request):
 
 def movie_detail(request, pk):
     return HttpResponse(f'<h1>This is movie {pk}</h1>')
+
+
+def form_view(request):
+    pass
+
+
+def form_post(request):
+    pass

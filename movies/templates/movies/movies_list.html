@@ -11,7 +11,11 @@
             <p>Movies count: {{ movies.count }}</p>
             {% for movie in movies %}
                 <div class="col-sm-4 text-center card">
-                <img src="{{ movie.avatar.url }}" alt="Movie 1" class="avatar">
+                {% if movie.avatar %}
+                    <img src="{{ movie.avatar.url }}" alt="Movie 1" class="avatar">
+                {% else %}
+                    <img src="" alt="Movie 1" class="avatar">
+                {% endif %}
                 <a href={% url "movie_detail" movie.id %}>
                 <h4>{{ movie.title }}</h4>
                 </a>

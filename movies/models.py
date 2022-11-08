@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
 
 class Genre(models.Model):
@@ -58,6 +59,9 @@ class Movie(models.Model):
 
     def __str__(self):
         return self.title
+
+    # def clean(self):
+    #     raise ValidationError('Not good')
 
 
 class MovieCrew(models.Model):

@@ -26,6 +26,7 @@ def form_view(request):
 def form_post(request):
     form = TempForm(request.POST)
     if form.is_valid():
+        print(form.cleaned_data)
         return HttpResponse('Done')
 
     return HttpResponse(str(form.errors))

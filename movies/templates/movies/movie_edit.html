@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %} Movies Add Form {% endblock %}
+
+{% block content %}
+    <div class="main">
+        <h2 class="text-center">Edit: {{ movie.title }}</h2>
+        <div class="error">{{ form.non_field_errors }}</div>
+
+        <form method="post" enctype="multipart/form-data" action={% url 'movie_detail' movie.pk %}>
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group {% if field.errors %} border border-danger {% endif %}">
+                    <div class="error">{{ field.errors }}</div>
+                    {{ field.label_tag }} <br>
+                    {{ field }}
+                </div>
+            {% endfor %}
+        <br>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+{% endblock %}

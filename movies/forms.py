@@ -19,7 +19,6 @@ class MovieForm(forms.ModelForm):
     #     pass
 
 
-
 # class MovieForm(forms.Form):
 #     title = forms.CharField(min_length=5)
 #     description = forms.CharField()

@@ -7,7 +7,7 @@ from movies.forms import MovieForm
 
 def movies_list(request):
     if request.method == 'GET':
-        movies = Movie.objects.all()[:8]
+        movies = Movie.objects.all()
         context = {
             "movies": movies,
             "user": "Arash",
@@ -16,7 +16,7 @@ def movies_list(request):
         return render(request, 'movies/movies_list.html', context=context)
 
     elif request.method == 'POST':
-        form = MovieForm(request.POST)
+        form = MovieForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
 

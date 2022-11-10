@@ -5,7 +5,7 @@
     <div class="main">
         <div class="error">{{ form.non_field_errors }}</div>
 
-        <form method="post" action={% url 'movie_add' %}>
+        <form method="post" action={% url 'movies_list' %}>
             {% csrf_token %}
             {% for field in form %}
                 <div class="form-group">

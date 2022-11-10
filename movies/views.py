@@ -7,7 +7,7 @@ from movies.forms import MovieForm
 
 def movies_list(request):
     if request.method == 'GET':
-        movies = Movie.objects.all()
+        movies = Movie.objects.filter(is_valid=True)
         context = {
             "movies": movies,
             "user": "Arash",
@@ -26,7 +26,7 @@ def movies_list(request):
 
 
 def movie_detail(request, pk):
-    movie = get_object_or_404(Movie, pk=pk)
+    movie = get_object_or_404(Movie, pk=pk, is_valid=True)
     if request.method == 'GET':
         return HttpResponse(f'<h1>This is movie {pk}</h1>')
 
@@ -46,7 +46,7 @@ def movie_add(request, movie_form=None):
 
 
 def movie_edit(request, pk, movie_form=None):
-    movie = get_object_or_404(Movie, pk=pk)
+    movie = get_object_or_404(Movie, pk=pk, is_valid=True)
 
     if not movie_form:
         movie_form = MovieForm(instance=movie)
@@ -59,4 +59,8 @@ def movie_edit(request, pk, movie_form=None):
 
 
 def movie_delete(request, pk):
-    pass
+    movie = get_object_or_404(Movie, pk=pk, is_valid=True)
+    movie.is_valid = False
+    movie.save()
+
+    return redirect('movies_list')

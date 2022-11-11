@@ -1,10 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %} Movie Detail {% endblock %}
 
-</body>
-</html>
+{% block content %}
+    <div class="main text-center container">
+        <h2>{{ movie.title }}</h2>
+        <img src="{{ movie.avatar.url }}" width="30%" height="50%" alt="movie avatar">
+        <p>{{ movie.description }}</p>
+        <br> <br>
+        <h3>
+            Genres
+        </h3>
+        {% for genre in movie.genres.all %}
+            <p>{{ genre.title }}</p>
+        {% endfor %}
+        <h3>Crew List</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Gender</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for movie_crew in movie_crew_list %}
+                <tr>
+                    <td>
+                        {{ movie_crew.crew.full_name }}
+                    </td>
+                    <td>
+                        {{ movie_crew.role.title }}
+                    </td>
+                    <td>
+                        {{ movie_crew.crew.get_gender_display }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

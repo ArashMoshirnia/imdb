@@ -42,6 +42,10 @@ class Crew(models.Model):
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
+    @property
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
+
 
 class Movie(models.Model):
     title = models.CharField(max_length=100)
@@ -50,6 +54,7 @@ class Movie(models.Model):
     avatar = models.ImageField(upload_to='movies/avatars/', null=True, blank=True)
     genres = models.ManyToManyField(Genre, related_name='movies')
     crew = models.ManyToManyField(Crew, through='MovieCrew', related_name='movies')
+    view_count = models.IntegerField(default=0)
     is_valid = models.BooleanField(default=True)
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)

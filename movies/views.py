@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
-from movies.models import Movie
+from movies.models import Movie, MovieCrew
 from movies.forms import MovieForm
 
 
@@ -9,7 +9,7 @@ def movies_list(request):
     limit = int(request.GET.get('limit', 5))
     offset = int(request.GET.get('offset', 0))
     if request.method == 'GET':
-        movies = Movie.objects.filter(is_valid=True)[offset:limit+offset]
+        movies = Movie.objects.filter(is_valid=True).prefetch_related('genres')[offset:limit+offset]
         context = {
             "movies": movies,
             "user": "Arash",
@@ -30,7 +30,11 @@ def movies_list(request):
 def movie_detail(request, pk):
     movie = get_object_or_404(Movie, pk=pk, is_valid=True)
     if request.method == 'GET':
-        return HttpResponse(f'<h1>This is movie {pk}</h1>')
+        context = {
+            'movie': movie,
+            'movie_crew_list': MovieCrew.objects.filter(movie=movie).select_related('crew', 'role')
+        }
+        return render(request, 'movies/movie_detail.html', context=context)
 
     elif request.method == 'POST':
         form = MovieForm(request.POST, request.FILES, instance=movie)

@@ -6,8 +6,9 @@ from movies.forms import MovieForm
 
 
 def movies_list(request):
+    limit = int(request.GET.get('limit', 10))
     if request.method == 'GET':
-        movies = Movie.objects.filter(is_valid=True)
+        movies = Movie.objects.filter(is_valid=True)[:limit]
         context = {
             "movies": movies,
             "user": "Arash",

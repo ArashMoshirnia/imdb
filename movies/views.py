@@ -37,12 +37,16 @@ def movie_detail(request, pk):
         return render(request, 'movies/movie_detail.html', context=context)
 
     elif request.method == 'POST':
-        form = MovieForm(request.POST, request.FILES, instance=movie)
-        if not form.is_valid():
-            return movie_edit(request, pk, movie_form=form)
+        # if login: request.user -> authenticated user
+        # if not login: request -> AnonymousUser
+        if request.user.is_authenticated:
+            form = MovieForm(request.POST, request.FILES, instance=movie)
+            if not form.is_valid():
+                return movie_edit(request, pk, movie_form=form)
 
-        form.save()
-        return redirect('movie_detail', pk=pk)
+            form.save()
+            return redirect('movie_detail', pk=pk)
+        return redirect()
 
 
 def movie_add(request, movie_form=None):

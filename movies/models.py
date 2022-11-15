@@ -1,6 +1,10 @@
 from django.db import models
-from django.core.exceptions import ValidationError
-from django.db.models.manager import BaseManager
+# from django.core.exceptions import ValidationError
+# from django.db.models.manager import BaseManager
+
+
+# Authentication -> Who are you? -> User recognition
+# Authorization -> What can you do? -> User permissions
 
 
 class ValidManager(models.Manager):

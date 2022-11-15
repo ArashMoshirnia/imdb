@@ -9,7 +9,7 @@ def movies_list(request):
     limit = int(request.GET.get('limit', 5))
     offset = int(request.GET.get('offset', 0))
     if request.method == 'GET':
-        movies = Movie.objects.filter(is_valid=True).prefetch_related('genres')[offset:limit+offset]
+        movies = Movie.valid_objects.prefetch_related('genres')[offset:limit+offset]
         context = {
             "movies": movies,
             "user": "Arash",

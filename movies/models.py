@@ -1,5 +1,16 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.db.models.manager import BaseManager
+
+
+class ValidManager(models.Manager):
+    def get_queryset(self):
+        return super(ValidManager, self).get_queryset().filter(is_valid=True)
+
+
+class HorrorManager(models.Manager):
+    def get_queryset(self):
+        return super(HorrorManager, self).get_queryset().filter(genres__title__in=['Horror', 'Thriller'])
 
 
 class Genre(models.Model):
@@ -7,6 +18,9 @@ class Genre(models.Model):
     is_valid = models.BooleanField(default=True)
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
+
+    objects = models.Manager()
+    valid_objects = ValidManager()
 
     def __str__(self):
         return self.title
@@ -58,6 +72,10 @@ class Movie(models.Model):
     is_valid = models.BooleanField(default=True)
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
+
+    objects = models.Manager()
+    valid_objects = ValidManager()
+    horror_objects = HorrorManager()
 
     def get_description(self):
         return self.description.lower()

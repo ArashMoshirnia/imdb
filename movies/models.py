@@ -2,7 +2,8 @@ from django.conf import settings
 from django.db import models
 # from django.core.exceptions import ValidationError
 # from django.db.models.manager import BaseManager
-
+from comments.models import AbstractComment
+from users.models import User
 
 class ValidManager(models.Manager):
     def get_queryset(self):
@@ -97,3 +98,11 @@ class MovieCrew(models.Model):
 
     class Meta:
         unique_together = ('movie', 'crew', 'role')
+
+
+class MovieComment(AbstractComment):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+
+
+class CrewComment(AbstractComment):
+    crew = models.ForeignKey(Crew, on_delete=models.CASCADE)

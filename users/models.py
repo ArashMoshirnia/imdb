@@ -5,8 +5,11 @@ from django.db import models
 # Authentication -> Who are you? -> User recognition
 # Authorization -> What can you do? -> User permissions
 
+# django_user
+
 
 class User(AbstractUser):
+    # users_user
     phone_number = models.CharField(unique=True, max_length=12)
     address = models.TextField(blank=True)
     birthday = models.DateField(null=True)

@@ -31,3 +31,26 @@ class AbstractComment(models.Model):
         abstract = True
 
 
+# Proxy example
+
+# class ValidManager(models.Manager):
+#     def get_queryset(self):
+#         return super().get_queryset().filter(is_valid=True)
+#
+#
+# class NameModel(models.Model):
+#     name = models.CharField(max_length=100)
+#     is_valid = models.BooleanField(default=True)
+#
+#     class Meta:
+#         proxy = True
+#
+#
+# class ValidName(NameModel):
+#     objects = ValidManager()
+#
+#
+# class OrderedName(NameModel):
+#     class Meta:
+#         ordering = ('name', )
+

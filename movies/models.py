@@ -3,6 +3,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 # from django.core.exceptions import ValidationError
 # from django.db.models.manager import BaseManager
+from django.db.models import Avg
+
 from comments.models import AbstractComment
 from users.models import User
 
@@ -82,6 +84,11 @@ class Movie(models.Model):
 
     def get_description(self):
         return self.description.lower()
+
+    @property
+    def average_rating(self):
+        rate = self.ratings.all().aggregate(avg=Avg('rate'))
+        return rate.get('avg') or 1
 
     def __str__(self):
         return self.title

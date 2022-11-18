@@ -80,6 +80,47 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'imdb.wsgi.application'
 
+# Logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[{levelname}] [{asctime}] [{module}.{lineno}] [{process:d}] [{thread:d}] {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '[{levelname}] [{message}]',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'django': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/django.log'),
+            'formatter': 'verbose'
+        },
+        'movies': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/movies.log'),
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['django'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'movies': {
+            'handlers': ['movies'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

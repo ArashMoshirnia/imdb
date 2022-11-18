@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 # from django.core.exceptions import ValidationError
 # from django.db.models.manager import BaseManager
@@ -106,3 +107,14 @@ class MovieComment(AbstractComment):
 
 class CrewComment(AbstractComment):
     crew = models.ForeignKey(Crew, on_delete=models.CASCADE)
+
+
+class MovieRating(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='ratings')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='movie_ratings')
+    rate = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
+    created_time = models.DateTimeField(auto_now_add=True)
+    modified_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=('user', 'movie'), name='unique_user_movie')]

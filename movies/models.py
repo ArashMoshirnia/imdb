@@ -8,6 +8,7 @@ from django.db.models import Avg
 from comments.models import AbstractComment
 from users.models import User
 
+
 class ValidManager(models.Manager):
     def get_queryset(self):
         return super(ValidManager, self).get_queryset().filter(is_valid=True)
@@ -92,6 +93,10 @@ class Movie(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.description = self.description.capitalize()
+        super(Movie, self).save(*args, **kwargs)
 
     # def clean(self):
     #     raise ValidationError('Not good')

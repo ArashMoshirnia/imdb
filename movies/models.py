@@ -4,6 +4,7 @@ from django.db import models
 # from django.core.exceptions import ValidationError
 # from django.db.models.manager import BaseManager
 from django.db.models import Avg
+from django.utils.translation import gettext_lazy as _
 
 from comments.models import AbstractComment
 # from movies.signals import movie_created
@@ -21,10 +22,10 @@ class HorrorManager(models.Manager):
 
 
 class Genre(models.Model):
-    title = models.CharField(max_length=50)
-    is_valid = models.BooleanField(default=True)
-    created_time = models.DateTimeField(auto_now_add=True)
-    modified_time = models.DateTimeField(auto_now=True)
+    title = models.CharField(max_length=50, verbose_name=_('Title'))
+    is_valid = models.BooleanField(default=True, verbose_name=_('Is Valid'))
+    created_time = models.DateTimeField(auto_now_add=True, verbose_name=_('Created Time'))
+    modified_time = models.DateTimeField(auto_now=True, verbose_name=_('Modified Time'))
 
     objects = models.Manager()
     valid_objects = ValidManager()
@@ -47,8 +48,8 @@ class Crew(models.Model):
     MALE = 1
     FEMALE = 2
     GENDER_CHOICES = (
-        (MALE, 'Male'),
-        (FEMALE, 'Female')
+        (MALE, _('Male')),
+        (FEMALE, _('Female'))
     )
 
     first_name = models.CharField(max_length=100)

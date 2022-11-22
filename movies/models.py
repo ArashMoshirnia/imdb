@@ -6,6 +6,7 @@ from django.db import models
 from django.db.models import Avg
 
 from comments.models import AbstractComment
+# from movies.signals import movie_created
 from users.models import User
 
 
@@ -96,7 +97,10 @@ class Movie(models.Model):
 
     def save(self, *args, **kwargs):
         self.description = self.description.capitalize()
+        print('In movie save')
         super(Movie, self).save(*args, **kwargs)
+        print('After save')
+        # movie_created.send(self.__class__)
 
     # def clean(self):
     #     raise ValidationError('Not good')

@@ -1,9 +1,10 @@
 from rest_framework import status
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
+from rest_framework.parsers import JSONParser, MultiPartParser
 from rest_framework.views import APIView
-from rest_framework import mixins, generics
-from django.utils import timezone
+from rest_framework import mixins, generics, viewsets
 
 from movies.models import Movie
 from movies.api.serializers import MovieSerializer
@@ -24,32 +25,31 @@ def movies_list_api(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class MovieListAPIView(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
-    # queryset = Movie.valid_objects.prefetch_related('genres', 'crew')
+class MovieListAPIView(generics.ListCreateAPIView):
+    queryset = Movie.valid_objects.prefetch_related('genres', 'crew')
+    serializer_class = MovieSerializer
+    # parser_classes = [JSONParser, MultiPartParser]
+    # renderer_classes = [JSONRenderer]
+
+    # def get_queryset(self):
+    #     a_month_ago = timezone.now().date() - timezone.timedelta(days=30)
+    #     queryset = Movie.valid_objects.prefetch_related('genres', 'crew')
+    #     if self.request.method == 'GET':
+    #         queryset = queryset.filter(release_date__gte=a_month_ago)
+    #
+    #     return queryset
+
+
+class MovieDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Movie.valid_objects.prefetch_related('genres', 'crew')
     serializer_class = MovieSerializer
 
-    def get_queryset(self):
-        a_month_ago = timezone.now().date() - timezone.timedelta(days=30)
-        queryset = Movie.valid_objects.prefetch_related('genres', 'crew')
-        if self.request.method == 'GET':
-            queryset = queryset.filter(release_date__gte=a_month_ago)
 
-        return queryset
+class MovieViewSet(viewsets.ModelViewSet):
+    queryset = None
+    serializer_class = None
 
-    def get_serializer_class(self):
-        return MovieSerializer
+    @action(methods=['POST'], detail=False, url_path='movie_rate')
+    def rate(self, request, *args, **kwargs):
+        return Response({'result': f'rate submitted for movie'})
 
-    def get(self, request, *args, **kwargs):
-        # movies = Movie.valid_objects.prefetch_related('genres', 'crew')
-        # serializer = MovieSerializer(movies, many=True)
-        # return Response(serializer.data)
-
-        return self.list(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        # serializer = MovieSerializer(data=request.data)
-        # serializer.is_valid(raise_exception=True)
-        # serializer.save()
-        # return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        return self.create(request, *args, **kwargs)

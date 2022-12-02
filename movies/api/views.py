@@ -1,22 +1,21 @@
-from django.http import JsonResponse
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 
 from movies.models import Movie
+from movies.api.serializers import MovieSerializer
 
 
+@api_view(['GET', 'POST'])
 def movies_list_api(request):
-    movies = Movie.valid_objects.prefetch_related('genres', 'crew')
-    movie_objects = []
-    for movie in movies:
-        movie_objects.append(
-            {
-                'id': movie.id,
-                'title': movie.title,
-                'description': movie.description,
-                'release_date': movie.release_date.strftime('%Y-%m-%d') if movie.release_date else None,
-                'genres': [{'id': genre.id, 'title': genre.title} for genre in movie.genres.all()]
-            }
-        )
+    if request.method == 'GET':
+        movies = Movie.valid_objects.prefetch_related('genres', 'crew')
+        serializer = MovieSerializer(movies, many=True)
 
-    # movie_objects = json.dumps(movie_objects)
+        return Response(serializer.data)
 
-    return JsonResponse(movie_objects, safe=False)
+    elif request.method == 'POST':
+        serializer = MovieSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

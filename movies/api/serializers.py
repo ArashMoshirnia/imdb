@@ -53,7 +53,7 @@ class MovieSerializer(serializers.ModelSerializer):
     title = serializers.CharField(max_length=50)
     temp_field = serializers.BooleanField(default=True)
     is_released = serializers.SerializerMethodField()
-    genres = GenreSerializer(many=True)
+    genres = GenreSerializer(many=True, read_only=True)
     movie_crew = MovieCrewSerializer(many=True, read_only=True)
 
     class Meta:
@@ -88,12 +88,12 @@ class MovieSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         temp_field = validated_data.pop('temp_field')
-        genres = validated_data.pop('genres')
+        # genres = validated_data.pop('genres')
         instance = Movie.objects.create(**validated_data)
 
-        for genre in genres:
-            genre, created = Genre.objects.get_or_create(title=genre['title'])
-            instance.genres.add(genre)
+        # for genre in genres:
+        #     genre, created = Genre.objects.get_or_create(title=genre['title'])
+        #     instance.genres.add(genre)
 
         return instance
 

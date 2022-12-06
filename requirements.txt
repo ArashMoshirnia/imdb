@@ -1,3 +1,4 @@
 Django==4.1.2
 djangorestframework==3.14.0
 Pillow==9.2.0
+pymemcache==4.0.0

@@ -1,9 +1,10 @@
 from django.urls import path, include
+from django.views.decorators.cache import cache_page
 
 from .views import movies_list, movie_detail, movie_add, movie_edit, movie_delete
 
 urlpatterns = [
-    path('movies/', movies_list, name='movies_list'),
+    path('movies/', cache_page(15)(movies_list), name='movies_list'),
     path('movies/<int:pk>/', movie_detail, name='movie_detail'),
 
     path('movies/<int:pk>/edit/', movie_edit, name='movie_edit'),

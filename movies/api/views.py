@@ -1,3 +1,6 @@
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+
 from rest_framework import status
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
@@ -46,8 +49,12 @@ class MovieDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class MovieViewSet(viewsets.ModelViewSet):
-    queryset = None
-    serializer_class = None
+    queryset = Movie.valid_objects.prefetch_related('genres', 'crew')
+    serializer_class = MovieSerializer
+
+    @method_decorator(cache_page(15))
+    def list(self, request, *args, **kwargs):
+        return super(MovieViewSet, self).list(request, *args, **kwargs)
 
     @action(methods=['POST'], detail=False, url_path='movie_rate')
     def rate(self, request, *args, **kwargs):

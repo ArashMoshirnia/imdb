@@ -1,7 +1,9 @@
 import json
+from time import sleep
 
 from django.forms import model_to_dict
 from django.http import HttpResponse, JsonResponse
+from django.views.decorators.cache import cache_page
 from django.shortcuts import render, redirect, get_object_or_404
 
 from movies.models import Movie, MovieCrew
@@ -9,6 +11,7 @@ from movies.forms import MovieForm
 
 
 def movies_list(request):
+    sleep(3)
     limit = int(request.GET.get('limit', 5))
     offset = int(request.GET.get('offset', 0))
     if request.method == 'GET':

@@ -2,7 +2,7 @@ from django.utils import timezone
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from movies.models import Movie, Genre, Crew, MovieCrew, Role
+from movies.models import Movie, Genre, Crew, MovieCrew, Role, MovieComment
 
 
 # class MovieSerializer(serializers.Serializer):
@@ -101,14 +101,20 @@ class MovieSerializer(serializers.ModelSerializer):
         pass
 
 
-# from movies.api.serializers import MovieSerializer
+class MovieCommentSerializer(serializers.ModelSerializer):
+    # movie_data = MovieSerializer(read_only=True, source='movie')
 
-data = {
-    'title': 'My New Movie 2',
-    'description': 'Movie desc',
-    'release_date': '2010-01-01',
-    'genres': [{'title': 'New genre'}, {'title': 'Genre 2'}]
-}
-# serializer = MovieSerializer(data=data)
-# serializer.is_valid()
-# serializer.save()
+    class Meta:
+        model = MovieComment
+        fields = ('id', 'parent', 'comment_body', 'movie')
+        extra_kwargs = {'parent': {'allow_null': True, 'required': False}}
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        validated_data['user'] = user
+        return super(MovieCommentSerializer, self).create(validated_data)
+
+    def to_representation(self, instance):
+        res = super(MovieCommentSerializer, self).to_representation(instance)
+        res['movie'] = MovieSerializer(instance.movie).data
+        return res

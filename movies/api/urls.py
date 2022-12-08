@@ -2,14 +2,12 @@ from django.urls import path
 from django.views.decorators.cache import cache_page
 from rest_framework.routers import DefaultRouter
 
-from .views import movies_list_api, MovieListAPIView, MovieDetailAPIView, MovieViewSet
+from .views import movies_list_api, MovieListAPIView, MovieDetailAPIView, MovieViewSet, MovieCommentView
 
 router = DefaultRouter()
 router.register(r'movies', MovieViewSet, basename='movies')
+router.register(r'comments', MovieCommentView, basename='comments')
 
-movies_list = MovieViewSet.as_view({'get': 'list', 'post': 'create'})
-movies_detail = MovieViewSet.as_view({'get': 'retrieve', 'put': 'update',
-                                      'patch': 'partial_update', 'delete': 'destroy'})
 
 urlpatterns = [
     # path('movies/', MovieListAPIView.as_view(), name='movies_list_api'),

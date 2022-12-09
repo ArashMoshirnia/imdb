@@ -1,8 +1,11 @@
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
 from rest_framework.throttling import AnonRateThrottle, UserRateThrottle, ScopedRateThrottle
+from rest_framework.versioning import URLPathVersioning
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import status
 from rest_framework.authentication import BasicAuthentication, TokenAuthentication
@@ -13,6 +16,7 @@ from rest_framework.parsers import JSONParser, MultiPartParser
 from rest_framework.views import APIView
 from rest_framework import mixins, generics, viewsets
 
+from movies.filters import MovieFilterSet
 from movies.models import Movie, MovieComment
 from movies.api.serializers import MovieSerializer, MovieCommentSerializer
 from movies.paginations import MoviesPagination
@@ -61,8 +65,15 @@ class MovieViewSet(viewsets.ModelViewSet):
     # throttle_classes = [ScopedRateThrottle]
     # throttle_scope = 'movies'
     pagination_class = LimitOffsetPagination
+    # versioning_class = URLPathVersioning
     queryset = Movie.valid_objects.prefetch_related('genres', 'crew')
     serializer_class = MovieSerializer
+
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_class = MovieFilterSet
+    # filterset_fields = ('genres', 'release_date')
+    search_fields = ('=title', 'description')
+    ordering_fields = ('title', 'release_date')
 
     def get_throttles(self):
         if self.action == 'list':

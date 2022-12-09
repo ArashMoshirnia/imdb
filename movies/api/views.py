@@ -1,6 +1,7 @@
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
+from rest_framework.throttling import AnonRateThrottle, UserRateThrottle, ScopedRateThrottle
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import status
 from rest_framework.authentication import BasicAuthentication, TokenAuthentication
@@ -14,6 +15,7 @@ from rest_framework import mixins, generics, viewsets
 from movies.models import Movie, MovieComment
 from movies.api.serializers import MovieSerializer, MovieCommentSerializer
 from movies.permissions import MovieCommentPermission
+from movies.throttles import MoviesListThrottle
 
 
 @api_view(['GET', 'POST'])
@@ -54,8 +56,16 @@ class MovieDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 class MovieViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticatedOrReadOnly]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'movies'
     queryset = Movie.valid_objects.prefetch_related('genres', 'crew')
     serializer_class = MovieSerializer
+
+    def get_throttles(self):
+        if self.action == 'list':
+            return [MoviesListThrottle()]
+
+        return [ScopedRateThrottle()]
 
     def get_permissions(self):
         if self.action == 'list':
@@ -66,7 +76,7 @@ class MovieViewSet(viewsets.ModelViewSet):
 
         return [AllowAny()]
 
-    # @method_decorator(cache_page(15))
+    @method_decorator(cache_page(60))
     def list(self, request, *args, **kwargs):
         print(request.user)
         return super(MovieViewSet, self).list(request, *args, **kwargs)

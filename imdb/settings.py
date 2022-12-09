@@ -206,3 +206,11 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'AUTH_HEADER_TYPES': ('Bearer', 'JWT'),
 }
+
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '5/min',
+        'user': '1000/day',
+        'movies': '2/min',
+    }
+}

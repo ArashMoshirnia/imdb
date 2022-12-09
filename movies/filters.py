@@ -11,10 +11,3 @@ class MovieFilterSet(django_filters.FilterSet):
     class Meta:
         model = Movie
         fields = ('title', )
-
-    def filter_queryset(self, queryset):
-        return queryset.filter(
-            release_date__gte='2000-01-01',
-            release_date__lt='2020-01-01',
-            genres__title='Mystery'
-        )

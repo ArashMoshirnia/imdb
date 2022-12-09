@@ -44,12 +44,14 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
     'django_filters',
+    'silk',
 
     'movies.apps.MoviesConfig',
     'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
+    'silk.middleware.SilkyMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -216,3 +218,9 @@ REST_FRAMEWORK = {
     },
     'PAGE_SIZE': 10
 }
+
+SILKY_AUTHENTICATION = True  # User must login
+SILKY_AUTHORISATION = True  # User must have permissions
+SILKY_META = True
+SILKY_INTERCEPT_PERCENT = 100 # log only 50% of requests
+SILKY_ANALYZE_QUERIES = True

@@ -75,6 +75,9 @@ class MovieViewSet(viewsets.ModelViewSet):
     search_fields = ('=title', 'description')
     ordering_fields = ('title', 'release_date')
 
+    # lookup_url_kwarg = 'pk'
+    # lookup_field = 'pk'
+
     def get_throttles(self):
         if self.action == 'list':
             return [MoviesListThrottle()]
@@ -90,7 +93,7 @@ class MovieViewSet(viewsets.ModelViewSet):
 
         return [AllowAny()]
 
-    @method_decorator(cache_page(60))
+    # @method_decorator(cache_page(60))
     def list(self, request, *args, **kwargs):
         print(request.user)
         return super(MovieViewSet, self).list(request, *args, **kwargs)

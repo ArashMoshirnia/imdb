@@ -212,5 +212,6 @@ REST_FRAMEWORK = {
         'anon': '5/min',
         'user': '1000/day',
         'movies': '2/min',
-    }
+    },
+    'PAGE_SIZE': 10
 }

@@ -1,5 +1,6 @@
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
 from rest_framework.throttling import AnonRateThrottle, UserRateThrottle, ScopedRateThrottle
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -14,6 +15,7 @@ from rest_framework import mixins, generics, viewsets
 
 from movies.models import Movie, MovieComment
 from movies.api.serializers import MovieSerializer, MovieCommentSerializer
+from movies.paginations import MoviesPagination
 from movies.permissions import MovieCommentPermission
 from movies.throttles import MoviesListThrottle
 
@@ -56,8 +58,9 @@ class MovieDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 class MovieViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticatedOrReadOnly]
-    throttle_classes = [ScopedRateThrottle]
-    throttle_scope = 'movies'
+    # throttle_classes = [ScopedRateThrottle]
+    # throttle_scope = 'movies'
+    pagination_class = LimitOffsetPagination
     queryset = Movie.valid_objects.prefetch_related('genres', 'crew')
     serializer_class = MovieSerializer
 

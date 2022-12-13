@@ -16,7 +16,7 @@ urlpatterns = [
 
     # path('movies/', cache_page(15)(movies_list), name='movies_list_api'),
     # path('movies/<int:pk>/', movies_detail, name='movies_detail_api'),
-    path('v2/', include('movies.api.v2.urls'))
+    # path('v2/', include('movies.api.v2.urls'))
 ]
 
 urlpatterns += router.urls

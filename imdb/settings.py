@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'django_filters',
     'silk',
+    'drf_spectacular',
 
     'movies.apps.MoviesConfig',
     'users.apps.UsersConfig',
@@ -216,7 +217,8 @@ REST_FRAMEWORK = {
         'user': '1000/day',
         'movies': '2/min',
     },
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 SILKY_AUTHENTICATION = True  # User must login

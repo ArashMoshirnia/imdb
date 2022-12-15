@@ -13,6 +13,8 @@ import os.path
 from datetime import timedelta
 from pathlib import Path
 
+from decouple import config
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -205,6 +207,9 @@ AUTH_USER_MODEL = 'users.User'
 #     'django.contrib.auth.backends.ModelBackend',
 #     'users.authentication_backends.MyBackend'
 # ]
+
+CELERY_BROKER_URL = config('CELERY_BROKER_URL', default='redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/1'
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),

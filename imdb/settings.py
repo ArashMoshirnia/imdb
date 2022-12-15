@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 
     'movies.apps.MoviesConfig',
     'users.apps.UsersConfig',
+    'comments.apps.CommentsConfig',
 ]
 
 MIDDLEWARE = [
@@ -226,3 +227,6 @@ SILKY_AUTHORISATION = True  # User must have permissions
 SILKY_META = True
 SILKY_INTERCEPT_PERCENT = 100 # log only 50% of requests
 SILKY_ANALYZE_QUERIES = True
+
+REDIS_CACHE_PREFIX = 'imdb'
+REDIS_EXCHANGE_RATE_HASHMAP_NAME = f'{REDIS_CACHE_PREFIX}:currency_exchange_rates'

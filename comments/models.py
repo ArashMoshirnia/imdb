@@ -54,3 +54,23 @@ class AbstractComment(models.Model):
 #     class Meta:
 #         ordering = ('name', )
 
+
+class CurrencyExchangeRate(models.Model):
+    currency_from = models.CharField(max_length=4)
+    currency_to = models.CharField(max_length=4)
+    rate = models.FloatField()
+
+
+# CurrencyExchangeRate(currency_from='USD', currency_to='IRR', rate=400000)
+# CurrencyExchangeRate(currency_from='USD', currency_to='EUR', rate=0.99)
+
+
+# Django command to retrieve and save all CurrencyExchangeRates to a redis Hashmap
+# ex = {
+#     "USD/IRR": 400000,
+#     "USD/EUR": 0.99
+# }
+
+# Function that receives two currency codes and return the exchange rate from redis
+
+# Hashmap commands: HSET, HGET, HGETALL

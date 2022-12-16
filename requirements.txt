@@ -5,6 +5,10 @@ djangorestframework==3.14.0
 drf_spectacular
 redis
 hiredis
+python-decouple
+django-celery-beat
+django-debug-toolbar
+django-silk
 djangorestframework-simplejwt==5.2.2
 Pillow==9.2.0
 pymemcache==4.0.0

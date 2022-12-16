@@ -1,6 +1,10 @@
+import logging
 from celery.exceptions import MaxRetriesExceededError
+from celery.utils.log import get_task_logger
 from django.utils import timezone
 from celery import shared_task
+
+logger = get_task_logger('users')
 
 
 def send_kavehnegar_sms(phone_number, success=True):
@@ -23,6 +27,17 @@ def send_sms_to_user(self, phone_number):
     #         print('task failed')
 
     return result
+
+
+@shared_task(queue='temp')
+def temp_task():
+    return True
+
+
+@shared_task
+def my_periodic_task():
+    logger.info('Periodic task is run')
+    return True
 
 
 def run_task():

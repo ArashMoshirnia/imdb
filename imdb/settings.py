@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django_filters',
     'silk',
     'drf_spectacular',
+    'django_celery_beat',
 
     'movies.apps.MoviesConfig',
     'users.apps.UsersConfig',
@@ -118,6 +119,12 @@ LOGGING = {
             'filename': os.path.join(BASE_DIR, 'logs/movies.log'),
             'formatter': 'verbose'
         },
+        'users': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/users.log'),
+            'formatter': 'verbose'
+        },
     },
     'loggers': {
         'django.request': {
@@ -130,6 +137,11 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
+        'users': {
+            'handlers': ['users'],
+            'level': 'INFO',
+            'propagate': True,
+        }
     },
 }
 

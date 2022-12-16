@@ -210,6 +210,8 @@ AUTH_USER_MODEL = 'users.User'
 
 CELERY_BROKER_URL = config('CELERY_BROKER_URL', default='redis://localhost:6379/0')
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/1'
+CELERY_ENABLE_UTC = False
+CELERY_TIMEZONE = 'Asia/Tehran'
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),

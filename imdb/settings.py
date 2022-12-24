@@ -13,7 +13,7 @@ import os.path
 from datetime import timedelta
 from pathlib import Path
 
-from decouple import config
+from decouple import config, Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_gm_wu7305t11v691cmk(z+pti0wwvq^=1wf))90uv&jva(kbs'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool, default=True)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv(), default='*')
 
 
 # Application definition
@@ -226,7 +226,7 @@ CELERY_ENABLE_UTC = False
 CELERY_TIMEZONE = 'Asia/Tehran'
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'AUTH_HEADER_TYPES': ('Bearer', 'JWT'),
 }
@@ -245,7 +245,7 @@ SILKY_AUTHENTICATION = True  # User must login
 SILKY_AUTHORISATION = True  # User must have permissions
 SILKY_META = True
 SILKY_INTERCEPT_PERCENT = 100 # log only 50% of requests
-SILKY_ANALYZE_QUERIES = True
+SILKY_ANALYZE_QUERIES = False
 
 REDIS_CACHE_PREFIX = 'imdb'
 REDIS_EXCHANGE_RATE_HASHMAP_NAME = f'{REDIS_CACHE_PREFIX}:currency_exchange_rates'

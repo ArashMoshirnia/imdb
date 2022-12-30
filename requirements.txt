@@ -11,3 +11,4 @@ python-decouple
 django-celery-beat
 django-debug-toolbar
 django-silk
+gunicorn

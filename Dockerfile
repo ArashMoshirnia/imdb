@@ -5,7 +5,7 @@ WORKDIR /project
 
 COPY requirements.txt /project
 
-RUN apk add python3-dev build-essential libmysqlclient-dev
+RUN apk add --virtual python3-dev build-deps gcc musl-dev mariadb-dev
 
 RUN pip install --no-cache-dir -r requirements.txt
 

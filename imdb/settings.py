@@ -174,7 +174,11 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
         'LOCATION': f'redis://{REDIS_HOST}:{REDIS_PORT}',
         'KEY_PREFIX': 'imdb',
-        'TIMEOUT': None
+        'TIMEOUT': None,
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'PASSWORD': config('REDIS_PASS', default=''),
+        }
     },
 }
 

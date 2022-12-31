@@ -176,7 +176,6 @@ CACHES = {
         'KEY_PREFIX': 'imdb',
         'TIMEOUT': None,
         'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
             'PASSWORD': config('REDIS_PASS', default=''),
         }
     },

@@ -168,16 +168,16 @@ DATABASES = {
 # Cache
 REDIS_HOST = config('REDIS_HOST', default='127.0.0.1')
 REDIS_PORT = config('REDIS_PORT', default='6379')
+REDIS_PASS = config('REDIS_PASS', default='')
+REDIS_LOCATION = f'redis://{REDIS_HOST}:{REDIS_PORT}' if not REDIS_PASS else \
+    f'redis://default:{REDIS_PASS}@{REDIS_HOST}:{REDIS_PORT}'
 
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': f'redis://{REDIS_HOST}:{REDIS_PORT}',
+        'LOCATION': REDIS_LOCATION,
         'KEY_PREFIX': 'imdb',
-        'TIMEOUT': None,
-        'OPTIONS': {
-            'PASSWORD': config('REDIS_PASS', default=''),
-        }
+        'TIMEOUT': None
     },
 }
 

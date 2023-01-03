@@ -55,6 +55,9 @@ INSTALLED_APPS = [
     'comments.apps.CommentsConfig',
 ]
 
+if not DEBUG:
+    INSTALLED_APPS.append('django_minio_backend.apps.DjangoMinioBackendConfig')
+
 MIDDLEWARE = [
     'silk.middleware.SilkyMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
@@ -218,10 +221,27 @@ LOCALE_PATHS = [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-STATIC_URL = 'static/'
+if not DEBUG:
+    MINIO_ENDPOINT = config('MINIO_ENDPOINT', default='imdb-storage.darkube.app')
+    MINIO_ACCESS_KEY = config('MINIO_ACCESS_KEY', '2RxFAJbE5gq27bfHsXopzCPVVRKQDEow')
+    MINIO_SECRET_KEY = config('MINIO_SECRET_KEY', '0dcIcovxS4MiZdfFzIvOJjQYmAhftMQG')
+    MINIO_USE_HTTPS = True
+    MINIO_URL_EXPIRY_HOURS = timedelta(days=1)  # Default is 7 days (longest) if not defined
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+    STATICFILES_STORAGE = 'django_minio_backend.models.MinioBackendStatic'
+    DEFAULT_FILE_STORAGE = 'django_minio_backend.models.MinioBackend'
+
+    MINIO_MEDIA_FILES_BUCKET = 'media'  # replacement for MEDIA_ROOT
+    MINIO_STATIC_FILES_BUCKET = 'static'  # replacement for STATIC_ROOT
+    MINIO_PUBLIC_BUCKETS = [
+        MINIO_MEDIA_FILES_BUCKET,
+        MINIO_STATIC_FILES_BUCKET
+    ]
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 
 # Default primary key field type

@@ -9,6 +9,8 @@ RUN apk update \
     && apk add --virtual build-deps gcc python3-dev musl-dev \
     && apk add --no-cache mariadb-dev
 
+#RUN apk add nginx
+#COPY imdb.conf /etc/nginx/conf.d/
 
 RUN pip install --no-cache-dir -r requirements.txt
 

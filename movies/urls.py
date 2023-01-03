@@ -11,5 +11,6 @@ urlpatterns = [
     path('movies/<int:pk>/delete/', movie_delete, name='movie_delete'),
     path('movies/add/', movie_add, name='movie_add'),
 
-    path('api/', include('movies.api.urls'))
+    path('api/', include('movies.api.urls')),
+    path('auth/', include('users.urls')),
 ]

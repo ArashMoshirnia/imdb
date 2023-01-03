@@ -5,6 +5,7 @@ djangorestframework==3.14.0
 djangorestframework-simplejwt==5.2.2
 Pillow==9.2.0
 mysqlclient==2.1.1
+django-minio-backend==3.3.2
 drf_spectacular
 redis
 hiredis
